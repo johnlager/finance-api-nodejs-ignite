@@ -21,24 +21,19 @@ describe("Create User", () => {
     };
 
     const response = await createUserUseCase.execute(user);
-
-    console.log(response)
-
     expect(response).toHaveProperty("name");
   });
 
   it("Should not create an user with an e-mail that is already in use", async () => {
-    
     expect(async() => {
       const user: ICreateUserDTO = {
         name: "John",
         email: "a@b.com",
         password: "123",
       };
-  
+
       await createUserUseCase.execute(user);
       const response = await createUserUseCase.execute(user);  
     }).rejects.toBeInstanceOf(CreateUserError);
-    
-  })
-})
+  });
+});
