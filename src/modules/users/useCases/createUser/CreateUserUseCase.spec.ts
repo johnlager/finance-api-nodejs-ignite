@@ -9,7 +9,7 @@ let createUserUseCase: CreateUserUseCase;
 
 describe("Create User", () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository;
+    inMemoryUsersRepository = new InMemoryUsersRepository();
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
   });
 
@@ -33,7 +33,7 @@ describe("Create User", () => {
       };
 
       await createUserUseCase.execute(user);
-      const response = await createUserUseCase.execute(user);  
+      await createUserUseCase.execute(user);  
     }).rejects.toBeInstanceOf(CreateUserError);
   });
 });
