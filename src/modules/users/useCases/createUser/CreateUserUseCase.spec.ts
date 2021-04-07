@@ -1,8 +1,8 @@
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
-import { CreateUserError } from "./CreateUserError";
 
 import { ICreateUserDTO } from "./ICreateUserDTO";
+import { AppError } from "../../../../shared/errors/AppError";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let createUserUseCase: CreateUserUseCase;
@@ -19,7 +19,6 @@ describe("Create User", () => {
       email: "a@b.com",
       password: "123",
     };
-
     const response = await createUserUseCase.execute(user);
     expect(response).toHaveProperty("name");
   });
@@ -31,9 +30,8 @@ describe("Create User", () => {
         email: "a@b.com",
         password: "123",
       };
-
       await createUserUseCase.execute(user);
       await createUserUseCase.execute(user);  
-    }).rejects.toBeInstanceOf(CreateUserError);
+    }).rejects.toBeInstanceOf(AppError);
   });
 });
