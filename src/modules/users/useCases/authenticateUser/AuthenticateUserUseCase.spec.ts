@@ -2,7 +2,7 @@ import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUs
 import { ICreateUserDTO } from "../createUser/ICreateUserDTO";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase"
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
-import { IncorrectEmailOrPasswordError } from "./IncorrectEmailOrPasswordError";
+import { AppError } from "../../../../shared/errors/AppError";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let authenticateUserUseCase: AuthenticateUserUseCase;
@@ -20,9 +20,8 @@ describe("User Authentication", () => {
       email: "a@p.com",
       password: "123",
     };
-
+    await createUserUseCase.execute(createUser);
     const response = await authenticateUserUseCase.execute({email: createUser.email, password: createUser.password});
-
     expect(response).toHaveProperty("user");
     expect(response).toHaveProperty("token");
   });
@@ -34,10 +33,10 @@ describe("User Authentication", () => {
         email: "email@email.com",
         password: "123",
       };
-  
+      await createUserUseCase.execute(createUser);
       const fakeEmail = "Fake@email.com";
       await authenticateUserUseCase.execute({email: fakeEmail, password: createUser.password});  
-    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError);
+    }).rejects.toBeInstanceOf(AppError);
   });
 
   it("Should throw and error when an invalid password is given", async () => {
@@ -47,9 +46,9 @@ describe("User Authentication", () => {
         email: "email@email.com",
         password: "123",
       };
-  
+      await createUserUseCase.execute(createUser);
       const fakePassword = "Fake@email.com";
-      await authenticateUserUseCase.execute({ email: createUser.email, password: fakePassword });  
-    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError);
+      await authenticateUserUseCase.execute({email: createUser.email, password: fakePassword });  
+    }).rejects.toBeInstanceOf(AppError);
   });
 });
