@@ -1,8 +1,8 @@
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { ShowUserProfileUseCase } from "./ShowUserProfileUseCase";
 
-import { ShowUserProfileError } from "./ShowUserProfileError";
 import { ICreateUserDTO } from "../createUser/ICreateUserDTO"; 
+import { AppError } from "../../../../shared/errors/AppError";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let showUserProfileUseCase: ShowUserProfileUseCase;
@@ -19,11 +19,10 @@ describe("Show User Profile", () => {
       email: "a@p.com",
       password: "123"
     };
-
     const user = await inMemoryUsersRepository.create(createUser);
     const user_id = user.id as string;
     const response = await showUserProfileUseCase.execute(user_id);
-
+    
     expect(response).toHaveProperty("id");
     expect(response).toHaveProperty("name");
     expect(response).toHaveProperty("email");
@@ -33,6 +32,6 @@ describe("Show User Profile", () => {
   it("Should throw an error when a non-existing profile id is given", async () => {
     expect(async() => {
       await showUserProfileUseCase.execute("123");
-    }).rejects.toBeInstanceOf(ShowUserProfileError);
+    }).rejects.toBeInstanceOf(AppError);
   });
 });
