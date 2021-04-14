@@ -1,16 +1,17 @@
 import { injectable, inject } from "tsyringe";
 
+import { User } from "../../entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { ShowUserProfileError } from "./ShowUserProfileError";
 
 @injectable()
-export class ShowUserProfileUseCase {
+class ShowUserProfileUseCase {
   constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
   ) {}
 
-  async execute(user_id: string) {
+  async execute(user_id: string): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -20,3 +21,5 @@ export class ShowUserProfileUseCase {
     return user;
   }
 }
+
+export { ShowUserProfileUseCase };
