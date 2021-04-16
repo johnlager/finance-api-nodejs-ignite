@@ -52,12 +52,6 @@ describe("Create an Statement", () => {
   });
 
   it("Should throw an error when create a statement with invalid user", async () => {
-    // const createUser: ICreateUserDTO = {
-    //   name: "john",
-    //   email: "a@p.com",
-    //   password: "123",
-    // };
-    // const user = await inMemoryUsersRepository.create(createUser);
     const user_id = "invalid_statement_id";
     const createStatement = {
       user_id,
